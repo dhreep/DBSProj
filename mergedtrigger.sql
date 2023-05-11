@@ -1,5 +1,5 @@
-CREATE OR REPLACE TRIGGER update_customer_status
-Before INSERT ON Orders
+CREATE OR REPLACE TRIGGER update_customer_and_cancel_order
+BEFORE INSERT OR UPDATE ON Orders
 FOR EACH ROW
 DECLARE
   last_order_date DATE;
@@ -11,11 +11,13 @@ BEGIN
   SELECT MAX(Transaction_Date) INTO last_order_date
   FROM Orders
   WHERE Customer_ID = :NEW.Customer_ID;   
-    -- Update the customer's date of last purchase
-    UPDATE Customer
-    SET Date_of_Last_Purchase = sysdate
-    WHERE Customer_ID = :NEW.Customer_ID;
-   OPEN customer_cur;
+  -- Update the customer's date of last purchase
+  UPDATE Customer
+  SET Date_of_Last_Purchase = sysdate
+  WHERE Customer_ID = :NEW.Customer_ID;
+
+  -- Update the customer status
+  OPEN customer_cur;
   LOOP
     FETCH customer_cur INTO customer_rec;
     EXIT WHEN customer_cur%NOTFOUND;
@@ -28,5 +30,10 @@ BEGIN
     END IF;
   END LOOP;
   CLOSE customer_cur;
+
+  -- Cancel the order if it has already been fulfilled
+  IF :OLD.Order_Staus = 'Fulfilled' AND :NEW.Order_Staus = 'Cancelled' THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Cannot cancel the order as it has already been delivered.');
+  END IF;
 END;
 /
