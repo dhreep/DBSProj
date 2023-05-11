@@ -1,0 +1,71 @@
+Customer:
+	Status: Active or Inactive
+	Scan customer table on every transaction to update status column
+
+
+
+
+General: 
+	1)Update Customer Status on any updation in transaction or customer table -> DONE
+	2)Trigger on customer asking for adresses and phone number and another column for more adresses and phone numbers
+	3)Cursor on customer address scannning the table for previously entered address on new address added by the customer and will only create a new entry in lives in
+	4)Trigger on Inventory asking for adresses and quantity and another column for more adresses and quantity
+	5)Cursor on Warehouse for scannning the table for previously entered address on new address added by the customer and will only create a new entry in located in
+	6)Trigger on inventory table to update quantity and date of last purchase of customer -> DONE	
+	7)Trigger on Transaction to check if order status is updated to cancelled refuse cancellation after status becomes fulfilled
+	8)On insertion of old pid with old wid update only quantity
+
+
+
+
+Normalization:
+All the tables seem to be in Boyce-Codd Normal Form (BCNF) since all tables have only one candidate key, and each non-key attribute is functionally dependent on the primary key. Also, there are no partial dependencies, i.e., no non-key attributes are dependent on only a part of the primary key.
+
+However, there is one potential issue with the "Orders" table. The "Method_Of_Payment" and "Order_Staus" columns have check constraints that limit their values to a predefined set of options. While this helps to ensure data integrity, it is not strictly related to the table's functional dependencies. Therefore, to be in BCNF, these columns should be moved to a separate table and referenced by a foreign key in the "Orders" table. This will eliminate the possibility of redundant data and improve the maintainability of the database schema.
+
+Dependencies:
+
+
+Functional dependencies in each table:
+
+- Customer:
+  - Customer_ID -> Customer_Name
+  - Customer_ID -> Date_of_Birth
+  - Customer_ID -> Customer_Password
+  - Customer_ID -> Date_of_Signup
+  - Customer_ID -> Date_of_Last_Purchase
+  - Customer_ID -> Customer_Status
+
+- Inventory:
+  - Product_ID -> Product_Name
+  - Product_ID -> Cost_Price
+  - Product_ID -> Prod_Type
+  - Product_ID -> Manufacture_Date
+  - Product_ID -> Expiry_Date
+
+- Customer_Address:
+  - Address_ID -> Customer_Address
+  - Address_ID -> Customer_Pincode
+
+- Warehouse_Address:
+  - Warehouse_ID -> Warehouse_Address
+  - Warehouse_ID -> Warehouse_PinCode
+
+- Lives_in:
+  - (Customer_ID, Address_ID) -> Contact
+
+- Located_in:
+  - (Warehouse_ID, Product_ID) -> Quantity
+
+- Orders:
+  - Transaction_ID -> Transaction_Date
+  - Transaction_ID -> Transaction_Time
+  - Transaction_ID -> Quantity_of_Sale
+  - Transaction_ID -> Selling_Price
+  - Transaction_ID -> Final_Cost
+  - Transaction_ID -> Method_Of_Payment
+  - Transaction_ID -> Order_Staus
+  - Transaction_ID -> Customer_ID
+  - Transaction_ID -> Warehouse_ID
+  - Transaction_ID -> Address_ID
+  - Transaction_ID -> Product_ID

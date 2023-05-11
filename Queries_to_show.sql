@@ -103,3 +103,9 @@ FETCH FIRST ROW ONLY;
 -- LEFT JOIN Located_in l ON i.Product_ID = l.Product_ID
 -- WHERE l.Warehouse_ID = 3 AND (l.Quantity IS NULL OR l.Quantity = 0);
 
+INSERT INTO Orders(Transaction_ID, Transaction_Date, Transaction_Time, Quantity_of_Sale, Selling_Price, Final_Cost, Method_Of_Payment, Order_Staus, Customer_ID, Warehouse_ID, Address_ID, Product_ID)
+VALUES (6, TO_DATE('10-MAY-23', 'DD-MON-YY'), TO_DATE('15:30:00', 'HH24:MI:SS'), 5, 10.50, 52.50, 'UPI', 'Ordered', 'C005', 1, 1, 1);
+
+
+INSERT INTO Inventory (Product_ID, Product_Name, Cost_Price, Prod_Type, Manufacture_Date, Expiry_Date)
+VALUES (6, 'Dove Soap', 50.00, 'Soap', TO_DATE('2022-01-01', 'YYYY-MM-DD'), TO_DATE('2023-12-31', 'YYYY-MM-DD'));
