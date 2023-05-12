@@ -29,6 +29,7 @@ VALUES (6, TO_DATE('2023-05-06', 'YYYY-MM-DD'), TO_DATE('14:00:00', 'HH24:MI:SS'
 @"C:\Users\Dhruv Bajaj\Desktop\DBSMainPROJ\DBSPROJ\Cancelled_Order_Trig.sql"
 --Commit Here
 UPDATE Orders SET Order_Staus = 'Cancelled' WHERE Transaction_ID = 4;
+UPDATE Orders SET Order_Staus = 'Cancelled' WHERE Transaction_ID = 3;
 --Rollback Here
 
 

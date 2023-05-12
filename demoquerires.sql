@@ -56,16 +56,7 @@ SELECT Product_Name, SUM(Quantity_of_Sale) AS Total_Quantity
 FROM Inventory
 JOIN Orders ON Inventory.Product_ID = Orders.Product_ID
 GROUP BY Product_Name
---Query to find the address of the warehouse with the largest inventory:
-SELECT Warehouse_Address, Warehouse_PinCode
-FROM Warehouse_Address
-WHERE Warehouse_ID = (
-  SELECT Warehouse_ID
-  FROM Located_in
-  GROUP BY Warehouse_ID
-  ORDER BY SUM(Quantity) DESC
-  FETCH FIRST ROW ONLY
-);
+
 --Query to find the customer who has made the most purchases:
 SELECT Customer.Customer_Name, COUNT(*) AS Num_Purchases
 FROM Orders
